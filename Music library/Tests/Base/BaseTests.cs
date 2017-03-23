@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using Base;
 
@@ -10,7 +8,7 @@ using NUnit.Framework;
 
 namespace MusicLibrary.Tests
 {
-    public class MusicLibraryTests
+    public class BaseTests
     {
         [TestFixture]
         public class SongTests : MusicLibraryBaseTests
@@ -72,7 +70,20 @@ namespace MusicLibrary.Tests
             [Test]
             public void Import_ValidFile_ReturnsCorrectlyDeserealizedSongs()
             {
+                string fileName = $"{nameof(Song)}.xml";
+                var worker = new XMLImportExport<Song>();
+                var songs = new List<Song>
+                {
+                    new Song {Path = "Somepathlol"},
+                    new Song {Path = "Somepathlol2"}
+                };
 
+                worker.Export(songs, AppDomain.CurrentDomain.BaseDirectory, fileName);
+                string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+
+                var actual = worker.Import(absolutePath);
+
+                CollectionAssert.AreEqual(songs, actual);
             }
         }
     }

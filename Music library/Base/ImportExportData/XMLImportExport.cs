@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -10,14 +9,21 @@ namespace Base
     /// </summary>
     internal class XMLImportExport<T> : IImportExport<T> where T : class, new()
     {
-        public List<T> Import()
+        public List<T> Import(string sourceFilePath)
         {
-            throw new NotImplementedException();
+            List<T> result;
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+            using (StreamReader reader = new StreamReader(sourceFilePath))
+            {
+                result = (List<T>) serializer.Deserialize(reader);
+            }
+            return result;
         }
 
-        public string Export(List<T> data, string destinationPath, string fileName)
+        public string Export(List<T> data, string destinationDirectoryPath, string fileName)
         {
-            string filePath = Path.Combine(destinationPath, fileName);
+            string filePath = Path.Combine(destinationDirectoryPath, fileName);
 
             if (!File.Exists(filePath))
             {

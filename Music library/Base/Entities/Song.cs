@@ -1,26 +1,33 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-
+using System.Xml.Serialization;
 using TagLib;
 using File = System.IO.File;
 
 namespace Base
 {
+    [Serializable]
     public class Song
     {
+        [XmlElement(nameof(Name))]
         public string Name { get; set; }
 
+        [XmlElement(nameof(Path))]
         public string Path { get; set; }
 
+        [XmlElement(nameof(Title))]
         public string Title { get; set; }
 
+        [XmlElement(nameof(Lenght))]
         public long Lenght { get; set; }
 
+        [XmlElement(nameof(Album))]
         public string Album { get; set; }
 
+        [XmlElement(nameof(Year))]
         public uint Year { get; set; }
 
+        [XmlElement(nameof(Artist))]
         public string Artist { get; set; }
 
         /// <summary>

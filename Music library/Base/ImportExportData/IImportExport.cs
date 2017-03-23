@@ -4,8 +4,18 @@ namespace Base
 {
     public interface IImportExport<T> where T : class, new()
     {
-        List<T> Import();
+        /// <summary>
+        /// Imports xml file to defined class
+        /// </summary>
+        List<T> Import(string sourceFilePath);
 
-        string Export(List<T> data, string destinationPath, string fileName);
+        /// <summary>
+        /// Creates xml file from given data
+        /// </summary>
+        /// <param name="data">What should be exported</param>
+        /// <param name="destinationDirectoryPath">where it should be exported</param>
+        /// <param name="fileName">name of the xml file</param>
+        /// <returns></returns>
+        string Export(List<T> data, string destinationDirectoryPath, string fileName);
     }
 }

@@ -58,19 +58,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestData\a\04 벚꽃 엔딩.mp3" />
-    <Content Include="TestData\a\aa\03 여수 밤바다.mp3" />
-    <Content Include="TestData\b\11 향수.mp3" />
-    <Content Include="TestData\b\bb\bbb\10 꽃송이가.mp3" />
-    <Content Include="TestData\c\06 외로움증폭장치 %28브래드 드럼 한판 쉬기%29.mp3" />
-    <Content Include="TestData\c\cc\07 골목길.mp3" />
-    <Content Include="TestData\c\cc\08 골목길 어귀에서.mp3" />
-    <Content Include="TestData\c\cc\ccc\01 봄바람.mp3" />
-    <Content Include="TestData\c\cc\ccc\02 첫사랑.mp3" />
-    <Content Include="TestData\c\cc\ccc\05 이상형.mp3" />
-    <Content Include="TestData\c\cc\ccc\09 전활 거네.mp3" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="ApiLogic\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

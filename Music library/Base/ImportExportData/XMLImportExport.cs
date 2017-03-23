@@ -1,51 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using SharpFileSystem;
 
 namespace Base
 {
+    /// <summary>
+    /// XML Helper class
+    /// </summary>
     internal class XMLImportExport<T> : IImportExport<T> where T : class, new()
     {
-        private readonly IFileSystem _fileSystem;
-
-        public XMLImportExport(IFileSystem fileSystem)
-        {
-            _fileSystem = fileSystem;
-        }
-
-
         public List<T> Import()
         {
             throw new NotImplementedException();
         }
 
-        private StringWriter XMLSerialize(object o)
+        public string Export(List<T> data, string destinationPath, string fileName)
         {
-            var xmlSerializer = new XmlSerializer(o.GetType());
-            var xml = new StringWriter();
-            xmlSerializer.Serialize(xml, o);
+            string filePath = Path.Combine(destinationPath, fileName);
 
-            return xml;
-        }
-
-
-        public void Export(List<T> data)
-        {
-            string fileName = $"{nameof(List<T>)}.xml";
-            FileSystemPath fileSystemPath = FileSystemPath.Root.AppendFile(fileName);
-
-            if (!_fileSystem.Exists(fileSystemPath))
+            if (!File.Exists(filePath))
             {
-                _fileSystem.CreateFile(fileSystemPath);
+                File.Create(filePath);
             }
 
             var xmlSerializer = new XmlSerializer(typeof(List<T>));
-            xmlSerializer.Serialize(_fileSystem.OpenFile(fileSystemPath, FileAccess.Write), data);
+            using (var reader = File.OpenWrite(filePath))
+            {
+                xmlSerializer.Serialize(reader, data);
+            }
+
+            return filePath;
         }
     }
 }

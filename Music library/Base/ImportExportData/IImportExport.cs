@@ -6,6 +6,6 @@ namespace Base
     {
         List<T> Import();
 
-        void Export(List<T> data);
+        string Export(List<T> data, string destinationPath, string fileName);
     }
 }

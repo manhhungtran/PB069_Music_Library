@@ -2,23 +2,13 @@
 using System.IO;
 using System.Text;
 
-
-using SharpFileSystem;
-using SharpFileSystem.FileSystems;
 using TagLib;
+using File = System.IO.File;
 
 namespace Base
 {
     public class Song
     {
-        private static IFileSystem _fileSystem;
-
-        public static IFileSystem FileSystem
-        {
-            get { return _fileSystem ?? new PhysicalFileSystem("C:/"); }
-            set { _fileSystem = value; }
-        }
-
         public string Name { get; set; }
 
         public string Path { get; set; }
@@ -36,19 +26,14 @@ namespace Base
         /// <summary>
         /// Creates new instance of Song and maps all IDv info about it to the class.
         /// </summary>
-        public static Song New(string filePath, IFileSystem fileSystem = null)
+        public static Song New(string filePath)
         {
-            if (fileSystem != null)
-            {
-                FileSystem = fileSystem;
-            }
-
-            if (!FileSystem.Exists(FileSystemPath.Parse(filePath)))
+            if (!File.Exists(filePath))
             {
                 throw new FileNotFoundException(nameof(filePath));
             }
 
-            var reader = FileSystem.OpenFile(FileSystemPath.Parse(filePath), FileAccess.ReadWrite);
+            var reader = File.Open(filePath, FileMode.Open);
 
             var streamFileAbstraction = new StreamFileAbstraction(filePath, reader, reader);
 

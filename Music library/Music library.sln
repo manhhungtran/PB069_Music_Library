@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base", "Base\Base.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicLibrary.Console", "MusicLibrary.Console\MusicLibrary.Console.csproj", "{FE64B787-6C22-4FFA-ACAA-9895AF61C94E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiLogic", "ApiLogic\ApiLogic.csproj", "{EF243802-0F8A-419D-8F06-066F05369544}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FE64B787-6C22-4FFA-ACAA-9895AF61C94E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE64B787-6C22-4FFA-ACAA-9895AF61C94E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE64B787-6C22-4FFA-ACAA-9895AF61C94E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF243802-0F8A-419D-8F06-066F05369544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF243802-0F8A-419D-8F06-066F05369544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF243802-0F8A-419D-8F06-066F05369544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF243802-0F8A-419D-8F06-066F05369544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

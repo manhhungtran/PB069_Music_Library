@@ -2,47 +2,68 @@
 using System.IO;
 using System.Text;
 
+
+using SharpFileSystem;
+using SharpFileSystem.FileSystems;
 using TagLib;
 
 namespace Base
 {
     public class Song
     {
-        public string Name { get; internal set; }
-        public string Path { get; internal set; }
-        public string Title { get; internal set; }
-        public long Lenght { get; internal set; }
-        public string Album { get; internal set; }
-        public uint Year { get; internal set; }
-        public string Artist { get; internal set; }
+        private static IFileSystem _fileSystem;
 
+        public static IFileSystem FileSystem
+        {
+            get { return _fileSystem ?? new PhysicalFileSystem("C:/"); }
+            set { _fileSystem = value; }
+        }
+
+        public string Name { get; set; }
+
+        public string Path { get; set; }
+
+        public string Title { get; set; }
+
+        public long Lenght { get; set; }
+
+        public string Album { get; set; }
+
+        public uint Year { get; set; }
+
+        public string Artist { get; set; }
 
         /// <summary>
         /// Creates new instance of Song and maps all IDv info about it to the class.
         /// </summary>
-        public static Song New(string filePath)
+        public static Song New(string filePath, IFileSystem fileSystem = null)
         {
-            if (!System.IO.File.Exists(filePath))
+            if (fileSystem != null)
             {
-                throw new FileNotFoundException();
+                FileSystem = fileSystem;
             }
 
-            var reader = System.IO.File.Open(filePath, FileMode.Open);
+            if (!FileSystem.Exists(FileSystemPath.Parse(filePath)))
+            {
+                throw new FileNotFoundException(nameof(filePath));
+            }
 
-            var sfa = new StreamFileAbstraction(reader.Name, reader, reader);
-            var song = new Song();
+            var reader = FileSystem.OpenFile(FileSystemPath.Parse(filePath), FileAccess.ReadWrite);
 
-            TagLib.File tagFile = TagLib.File.Create(sfa);
+            var streamFileAbstraction = new StreamFileAbstraction(filePath, reader, reader);
 
-            song.Name = System.IO.Path.GetFileNameWithoutExtension(filePath);
-            song.Path = filePath;
-            song.Artist = tagFile.Tag.FirstAlbumArtist;
-            song.Album = tagFile.Tag.Album;
-            song.Title = tagFile.Tag.Title + " " ;
-            song.Year =  tagFile.Tag.Year;
-            song.Lenght = tagFile.Length;
+            var tagFile = TagLib.File.Create(streamFileAbstraction);
 
-            return song;
+            return new Song
+            {
+                Name = System.IO.Path.GetFileNameWithoutExtension(filePath),
+                Path = filePath,
+                Artist = tagFile.Tag.FirstAlbumArtist,
+                Album = tagFile.Tag.Album,
+                Title = tagFile.Tag.Title,
+                Year = tagFile.Tag.Year,
+                Lenght = tagFile.Length
+            };
         }
 
         protected bool Equals(Song other)
@@ -60,9 +81,12 @@ namespace Base
 
         public override int GetHashCode()
         {
-            return (Path != null ? Path.GetHashCode() : 0);
+            return Path?.GetHashCode() ?? 0;
         }
 
+        /// <summary>
+        /// Mainly just for testing purpose.
+        /// </summary>
         public override string ToString()
         {
             return $"\n{nameof(Path)}: {Path}, " +

@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Base;
+using SharpFileSystem;
+using SharpFileSystem.FileSystems;
+using SharpFileSystem.IO;
+using Directory = System.IO.Directory;
+using File = System.IO.File;
 
 namespace MusicLibrary.Console
 {
@@ -11,11 +18,20 @@ namespace MusicLibrary.Console
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Hello World!");
 
-            var ong = Song.New("C:\\Users\\Hung\\Music\\Chinaski - Každý ráno (lyrics D ).mp3");
+            var FileSystem = new PhysicalFileSystem("C:\\");
+            var worker = new XMLImportExport<Song>(FileSystem);
 
-            System.Console.WriteLine(ong);
+            worker.Export(new List<Song> {new Song {Path = "asfkasbg"}});
+            var neco =
+                FileSystem.OpenFile(FileSystemPath.Root.AppendFile($"{nameof(List<Song>)}.xml"), FileAccess.Read)
+                    .ReadAllBytes();
+
+            FileSystem.Dispose();
+
+            FileStream file = File.Create(@"C:\neco.txt");
+            file.Write(neco);
+
         }
 
     }

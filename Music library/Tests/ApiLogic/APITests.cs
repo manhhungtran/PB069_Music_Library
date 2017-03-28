@@ -114,7 +114,7 @@ namespace MusicLibrary.Tests
         }
 
         [TestFixture]
-        public class PlayListTests: BaseTests
+        public class PlayListTests: MusicLibraryBaseTests
         {
             private IPlaylistManager _playlistManager;
             private Playlist playlist1;

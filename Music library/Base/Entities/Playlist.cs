@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Base
 {
+    [Serializable]
     public class Playlist
     {
-        public int ID { get; set; }
+        [XmlElement(nameof(Id))]
+        public int Id { get; set; }
 
+        [XmlElement(nameof(Name))]
         public string Name { get; set; }
 
+        [XmlElement(nameof(Songs))]
         public List<string> Songs { get; set; }
     }
 }

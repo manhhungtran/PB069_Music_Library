@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Base;
 
 namespace ApiLogic
@@ -9,11 +10,6 @@ namespace ApiLogic
         /// Adds song to the library
         /// </summary>
         void CreateSong(Song song);
-
-        /// <summary>
-        /// Edits song parameters
-        /// </summary>
-        void EditSong(Song song);
 
         /// <summary>
         /// Removes song from library
@@ -28,7 +24,7 @@ namespace ApiLogic
         /// <summary>
         /// Returns all songs from library
         /// </summary>
-        List<Song> GetAllSongs();
+        ReadOnlyCollection<Song> GetAllSongs();
 
     }
 }

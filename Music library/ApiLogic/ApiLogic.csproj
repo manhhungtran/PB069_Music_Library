@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="ManagerInterfaces\ILibraryManager.cs" />
     <Compile Include="ManagerInterfaces\IPlaylistManager.cs" />
+    <Compile Include="Managers\LibraryManager.cs" />
+    <Compile Include="Managers\PlaylistManager.cs" />
+    <Compile Include="Managers\SongManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ManagerInterfaces\ISongManager.cs" />
   </ItemGroup>

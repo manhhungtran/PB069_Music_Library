@@ -21,6 +21,11 @@ namespace MusicLibrary.Tests
         protected void TearDown()
         {
             AllFiles.Clear();
+            if (File.Exists($"{nameof(Song)}.xml"))
+            {
+                File.Delete($"{nameof(Song)}.xml");
+
+            }
         }
     }
 }

@@ -7,36 +7,36 @@ namespace Base
     /// <summary>
     /// XML Helper class
     /// </summary>
-    internal class XMLImportExport<T> : IImportExport<T> where T : class, new()
+    public class XMLImportExport<T> : IImportExport<T> where T : class, new()
     {
-        public List<T> Import(string sourceFilePath)
+        public HashSet<T> Import(string sourceFilePath)
         {
-            List<T> result;
+            HashSet<T> result;
 
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+
             using (StreamReader reader = new StreamReader(sourceFilePath))
             {
-                result = (List<T>) serializer.Deserialize(reader);
+                var serializer = new XmlSerializer(typeof(HashSet<T>));
+                result = serializer.Deserialize(reader) as HashSet<T>;
             }
+
             return result;
         }
 
-        public string Export(List<T> data, string destinationDirectoryPath, string fileName)
+        public string Export(HashSet<T> data, string destinationPath)
         {
-            string filePath = Path.Combine(destinationDirectoryPath, fileName);
-
-            if (!File.Exists(filePath))
+            if (!File.Exists(destinationPath))
             {
-                File.Create(filePath);
+                File.Create(destinationPath);
             }
 
-            var xmlSerializer = new XmlSerializer(typeof(List<T>));
-            using (var reader = File.OpenWrite(filePath))
+            using (var reader = File.OpenWrite(destinationPath))
             {
+                var xmlSerializer = new XmlSerializer(typeof(HashSet<T>));
                 xmlSerializer.Serialize(reader, data);
             }
 
-            return filePath;
+            return destinationPath;
         }
     }
 }

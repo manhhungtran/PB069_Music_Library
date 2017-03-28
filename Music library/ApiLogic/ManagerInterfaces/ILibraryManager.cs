@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace ApiLogic
+﻿namespace ApiLogic
 {
     public interface ILibraryManager
     {
-        void InitializeLibrary(IEnumerable<string> paths);
-        void AddRootPath(string path);
+        void InitializeLibrary();
+        void AddRootPath(string directoryPath);
         void RemoveRootPath(string path);
     }
 }

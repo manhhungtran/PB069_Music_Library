@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="Entities\Library.cs" />
     <Compile Include="Entities\Playlist.cs" />
+    <Compile Include="DirectoryIsSubPathException.cs" />
+    <Compile Include="Helpers\CollectionExtensions.cs" />
+    <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="ImportExportData\IImportExport.cs" />
     <Compile Include="ImportExportData\XMLImportExport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Base;
 
 namespace ApiLogic
@@ -37,7 +33,7 @@ namespace ApiLogic
         /// <summary>
         /// Returns all playlists from library;
         /// </summary>
-        List<Playlist> GetAllPlaylists();
+        HashSet<Playlist> GetAllPlaylists();
 
         /// <summary>
         /// Adds song to playlist
@@ -52,12 +48,12 @@ namespace ApiLogic
         /// <summary>
         ///Returns all songs from playlist given by <paramref name="id"/>
         /// </summary>
-        List<Song> GetAllSongsInPlaylist(int id);
+        HashSet<Song> GetAllSongsInPlaylist(int id);
 
         /// <summary>
         ///Returns all songs from playlist given by <paramref name="name"/>
         /// </summary>
-        List<Song> GetAllSongsInPlaylist(string name);
+        HashSet<Song> GetAllSongsInPlaylist(string name);
 
         /// <summary>
         /// Imports playlist from xml file.

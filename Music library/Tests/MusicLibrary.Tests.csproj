@@ -44,6 +44,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiLogic\APITests.cs" />
     <Compile Include="MusicLibraryBaseTests.cs" />
     <Compile Include="Base\BaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,14 +53,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ApiLogic\ApiLogic.csproj">
+      <Project>{ef243802-0f8a-419d-8f06-066f05369544}</Project>
+      <Name>ApiLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Base\Base.csproj">
       <Project>{70860ffe-d540-454c-9b4e-f0cb772ea45f}</Project>
       <Name>Base</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ApiLogic\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

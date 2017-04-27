@@ -12,19 +12,18 @@ namespace MusicLibrary.Tests
         protected List<string> AllFiles;
 
         [SetUp]
-        protected void SetUp()
+        public void SetUp()
         {
             AllFiles = Directory.EnumerateFiles("./", "*.mp3", SearchOption.AllDirectories).ToList();
         }
 
         [TearDown]
-        protected void TearDown()
+        public void TearDown()
         {
             AllFiles.Clear();
             if (File.Exists($"{nameof(Song)}.xml"))
             {
                 File.Delete($"{nameof(Song)}.xml");
-
             }
         }
     }

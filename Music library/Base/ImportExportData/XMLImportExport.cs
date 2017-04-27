@@ -13,7 +13,6 @@ namespace Base
         {
             HashSet<T> result;
 
-
             using (StreamReader reader = new StreamReader(sourceFilePath))
             {
                 var serializer = new XmlSerializer(typeof(HashSet<T>));

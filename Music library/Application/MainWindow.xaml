@@ -1,0 +1,225 @@
+﻿<Window x:Class="Application.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="500" Width="600" Background="White" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="Menu" Height="20" />
+            <RowDefinition Name="MenuToolbar" Height="65" />
+            <RowDefinition Name="Board" Height="*" />
+            <RowDefinition Name="Player" Height="60" />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Click="Window_Closed" />
+            </MenuItem>
+            <MenuItem Header="Playlist">
+                <MenuItem Header="New Playlist" Click="NewPlaylist" />
+                <MenuItem Header="Show Playlists" Click="ShowPlaylists" />
+                <Separator />
+                <MenuItem Header="Import Playlist" Click="ImportPlaylist" />
+                <MenuItem Header="Export Playlist" Click="ExportPlaylist" />
+                <Separator />
+                <MenuItem Header="Show playlists" />
+            </MenuItem>
+            <MenuItem Header="Library">
+                <MenuItem Header="Show library" Click="LibraryList"/>
+                <Separator />
+                <MenuItem Header="Add root folder" Click="AddRootFolder"/>
+                <MenuItem Header="Delete root folder" Click="RemoveRootFolder" />
+                <Separator />
+                <MenuItem Header="Reset" />
+            </MenuItem>
+            <MenuItem Header="Player">
+                <MenuItem Header="Play" Click="ButtonPlay_OnClick" />
+                <MenuItem Header="Pause" Click="ButtonPause_OnClick"/>
+                <Separator />
+                <MenuItem Header="Next" Click="ButtonNext_OnClick"/>
+                <MenuItem Header="Previous" Click="ButtonPrev_OnClick"/>
+                <Separator />
+                <MenuItem Header="Shuffle" Name="MenuShuffle" Click="ButtonShuffle_OnClick"/>
+                <MenuItem Header="Repeat" Name="MenuRepeat" Click="ButtonRepeat_OnClick"/>
+            </MenuItem>
+        </Menu>
+        <ToolBar Grid.Row="1"  Background="White">
+            <Button Click="LibraryList">
+                <StackPanel>
+                    <Image Height="30" Source="https://d30y9cdsu7xlg0.cloudfront.net/png/79163-200.png"></Image>
+                    <Label>Library</Label>
+                </StackPanel>
+            </Button>
+            <Button>
+                <StackPanel>
+                    <Label MouseDoubleClick="AddRootFolder">Add root path</Label>
+                    <Label MouseDoubleClick="RemoveRootFolder">Delete root path</Label>
+                </StackPanel>
+            </Button>
+            <Separator />
+            <Button Click="ShowPlaylists">
+                <StackPanel>
+                    <Image Height="30" Source="https://d30y9cdsu7xlg0.cloudfront.net/png/18062-200.png" />
+                    <Label>Playlists</Label>
+                </StackPanel>
+            </Button>
+            <Separator />
+            <Button Click="Window_Closed">
+                <StackPanel>
+                    <Image Height="30" Source="https://cdn3.iconfinder.com/data/icons/interface/100/close_button_1-512.png" />
+                    <Label>Exit</Label>
+                </StackPanel>
+            </Button>
+        </ToolBar>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition MinWidth="350"/>
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" Name="List" />
+            <ListBox Grid.Column="1" Name="DetailListing" />
+        </Grid>
+        <ToolBar Background="White" Grid.Row="3">
+            <Button Name="ButtonPlay" Click="ButtonPlay_OnClick">
+                <Image Height="40" Source="http://www.lynnettechadwick.com/wp-content/uploads/2015/04/play-button.png" />
+            </Button>
+            <Separator />
+            <Button Name="ButtonPause" Click="ButtonPause_OnClick">Pause</Button>
+            <Button Name="ButtonNext" Click="ButtonNext_OnClick">Next</Button>
+            <Button Name="ButtonPrev" Click="ButtonPrev_OnClick">Prev</Button>
+            <Button Name="ButtonShuffle" Click="ButtonShuffle_OnClick">Shuffle</Button>
+            <Button Name="ButtonRepeat" Click="ButtonRepeat_OnClick">Repeat</Button>
+        </ToolBar>
+        <MediaElement Grid.Row="3" Width="0" Height="0" LoadedBehavior="Manual" Name="MyPlayer" />
+    </Grid>
+
+</Window>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

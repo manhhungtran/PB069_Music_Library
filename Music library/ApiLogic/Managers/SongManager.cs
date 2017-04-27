@@ -33,5 +33,10 @@ namespace ApiLogic
         {
             return _songs.AsReadOnly();
         }
+
+        public void ClearSongs()
+        {
+            _songs.Clear();
+        }
     }
 }

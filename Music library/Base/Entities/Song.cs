@@ -80,13 +80,7 @@ namespace Base
         /// </summary>
         public override string ToString()
         {
-            return $"\n{nameof(Path)}: {Path}, " +
-                   $"\n{nameof(Lenght)}: {Lenght}, " +
-                   $"\n{nameof(Title)}: {Title}, " +
-                   $"\n{nameof(Album)}: {Album}, " +
-                   $"\n{nameof(Year)}: {Year}, " +
-                   $"\n{nameof(Artist)}: {Artist}," +
-                   $"\n{nameof(Name)}: {Name}";
+            return $"{Name}";
         }
     }
 }

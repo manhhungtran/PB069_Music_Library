@@ -8,14 +8,33 @@ namespace ApiLogic
 {
     public class LibraryManager : ILibraryManager
     {
-        internal readonly Library _library;
+        private static string LIBRARY_INFO_ROOT_PATH = "Library.xml";
+
+        internal Library Library;
         internal ISongManager SongManager;
         internal IPlaylistManager PlaylistManager;
+        internal IImportExport<Library> ImportExport;
 
         public LibraryManager()
         {
-            _library = new Library();
             SongManager = new SongManager();
+            ImportExport = new XMLImportExport<Library>();
+
+            if (File.Exists(LIBRARY_INFO_ROOT_PATH))
+            {
+                try
+                {
+                    Library = ImportExport.Import(LIBRARY_INFO_ROOT_PATH).First();
+                }
+                catch
+                {
+                    Library = new Library();
+                }
+            }
+            else
+            {
+                Library = new Library();
+            }
         }
 
         public LibraryManager(IEnumerable<string> paths) : this()
@@ -33,19 +52,29 @@ namespace ApiLogic
                 }
             }
 
-            _library.RootPath = new HashSet<string>(paths.ToList());
+            Library.RootPath = new HashSet<string>(paths.ToList());
         }
 
         public void InitializeLibrary()
         {
-            foreach (string s in _library.RootPath)
+            SongManager.ClearSongs();
+            Library.Songs.Clear();
+
+            foreach (string s in Library.RootPath)
             {
-                _library.Songs.UnionWith(Directory.EnumerateFiles(s, "*.mp3", SearchOption.AllDirectories));
+                Library.Songs.UnionWith(Directory.EnumerateFiles(s, "*.mp3", SearchOption.AllDirectories));
             }
 
-            foreach (string potentialSong in _library.Songs)
+            foreach (string potentialSong in Library.Songs)
             {
-                SongManager.CreateSong(Song.New(potentialSong));
+                try
+                {
+                    SongManager.CreateSong(Song.New(potentialSong));
+                }
+                catch
+                {
+                    // ignored
+                }
             }
         }
 
@@ -56,8 +85,8 @@ namespace ApiLogic
                 throw new DirectoryNotFoundException();
             }
 
-            var parent = _library.RootPath.Where(directoryPath.IsSubPathOf);
-            var children = _library.RootPath.Where(song => song.IsSubPathOf(directoryPath)).ToList();
+            var parent = Library.RootPath.Where(directoryPath.IsSubPathOf);
+            var children = Library.RootPath.Where(song => song.IsSubPathOf(directoryPath)).ToList();
 
             if (parent.Any())
             {
@@ -68,17 +97,38 @@ namespace ApiLogic
             {
                 foreach (string child in children)
                 {
-                    _library.RootPath.Remove(child);
+                    Library.RootPath.Remove(child);
                 }
             }
 
-            _library.RootPath.Add(directoryPath);
+            Library.RootPath.Add(directoryPath);
             InitializeLibrary();
         }
 
         public void RemoveRootPath(string path)
         {
-            _library.RootPath.Remove(path);
+            Library.RootPath.Remove(path);
+            InitializeLibrary();
+        }
+
+        public ISongManager GetSongManager()
+        {
+            return SongManager;
+        }
+
+        public void Save()
+        {
+            ImportExport.Export(new HashSet<Library> { Library }, LIBRARY_INFO_ROOT_PATH);
+        }
+
+        public void Load(string filePath)
+        {
+            Library = ImportExport.Import(filePath).First();
+        }
+
+        public List<string> GetAllRoots()
+        {
+            return new List<string>(Library.RootPath);
         }
     }
 }

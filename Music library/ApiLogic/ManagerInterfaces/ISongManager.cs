@@ -26,5 +26,9 @@ namespace ApiLogic
         /// </summary>
         ReadOnlyCollection<Song> GetAllSongs();
 
+        /// <summary>
+        /// Deletes all cached songs in the memory (physical files will remain)
+        /// </summary>
+        void ClearSongs();
     }
 }

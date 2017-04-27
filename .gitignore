@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Music library/Tests/TestData
+/Music library.rar
+/Music library.rar
+/Music library/Tests/TestData

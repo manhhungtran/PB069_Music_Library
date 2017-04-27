@@ -42,7 +42,7 @@ namespace MusicLibrary.Tests
             public void CreateLibraryWithoutParams_LibraryIsNotNull()
             {
                 _manager = new LibraryManager();
-                Assert.NotNull(_manager?._library);
+                Assert.NotNull(_manager?.Library);
             }
 
             [Test]
@@ -51,7 +51,7 @@ namespace MusicLibrary.Tests
                 var paths = new List<string> {SOME_PATH};
                 _manager = new LibraryManager(paths);
 
-                HashSet<string> actualRoots = _manager._library.RootPath;
+                HashSet<string> actualRoots = _manager.Library.RootPath;
 
                 CollectionAssert.AreEqual(paths, actualRoots);
             }
@@ -78,7 +78,7 @@ namespace MusicLibrary.Tests
                 paths.Add(ANOTHER_PATH);
                 _manager.AddRootPath(ANOTHER_PATH);
 
-                HashSet<string> actualRoots = _manager._library.RootPath;
+                HashSet<string> actualRoots = _manager.Library.RootPath;
 
                 CollectionAssert.AreEqual(paths, actualRoots);
             }
@@ -107,9 +107,9 @@ namespace MusicLibrary.Tests
                 _manager.AddRootPath(SOME_PATH_SUBPATH);
                 _manager.AddRootPath(SOME_PATH);
 
-                Assert.Contains(SOME_PATH, _manager._library.RootPath.ToList());
-                Assert.False(_manager._library.RootPath.Any(x => x == SOME_PATH_SUBPATH));
-                Assert.False(_manager._library.RootPath.Any(x => x == SOME_PATH_SUBPATH2));
+                Assert.Contains(SOME_PATH, _manager.Library.RootPath.ToList());
+                Assert.False(_manager.Library.RootPath.Any(x => x == SOME_PATH_SUBPATH));
+                Assert.False(_manager.Library.RootPath.Any(x => x == SOME_PATH_SUBPATH2));
             }
         }
 

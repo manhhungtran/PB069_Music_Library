@@ -8,8 +8,8 @@
         Title="AddPlaylist" Height="140.936" Width="300" Background="DarkGray">
     <Grid>
         <Label Grid.Column="0" Content="Name: " Margin="0,17,246,65"/>
-        <TextBox Name="TextBox" Background="White" Margin="49,20,87,70" Grid.Column="0" />
-        <Button Content="Confirm" HorizontalAlignment="Left" Margin="208,20,0,0" VerticalAlignment="Top" Width="75" Click="Confirmerino"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="208,45,0,0" VerticalAlignment="Top" Width="75" Click="Cancelino"/>
+        <TextBox Name="TextBox" Background="White" Margin="49,20,103,65.5" Grid.Column="0" />
+        <Button Content="Confirm" HorizontalAlignment="Left" Margin="208,20,0,0" VerticalAlignment="Top" Width="75" Click="Confirmerino" Height="28"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="208,60,0,0" VerticalAlignment="Top" Width="75" Click="Cancelino" Height="28"/>
     </Grid>
 </Window>

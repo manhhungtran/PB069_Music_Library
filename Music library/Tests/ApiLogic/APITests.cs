@@ -175,6 +175,16 @@ namespace MusicLibrary.Tests
                 Assert.AreEqual(2, _playlistManager.GetAllPlaylists().Count);
             }
 
+            [Test]
+            public void AddSongToPlaylist()
+            {
+                _playlistManager.CreatePlaylist(playlist1);
+                _playlistManager.CreatePlaylist(playlist2);
+
+                Assert.DoesNotThrow(() => _playlistManager.AddSongToPlaylist(playlist1.Name, ""));
+                Assert.DoesNotThrow(() => _playlistManager.RemoveSongFromPlaylist(playlist1.Name, ""));
+            }
+
             public void Delete()
             {
                 _playlistManager.CreatePlaylist(playlist1);

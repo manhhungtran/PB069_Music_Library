@@ -33,10 +33,7 @@ namespace Application
 
         private void SelectThisPlaylist(object sender, RoutedEventArgs routedEventArgs)
         {
-            if (ListBox.SelectedItem != null)
-            {
-                DialogResult = true;
-            }
+            DialogResult = ListBox.SelectedItem != null;
         }
     }
 }

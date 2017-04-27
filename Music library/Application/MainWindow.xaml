@@ -70,8 +70,8 @@
             </Button>
             <Button>
                 <StackPanel>
-                    <Label MouseDoubleClick="NewPlaylist">Create playlist</Label>
-                    <Label MouseDoubleClick="DeleteSelectedPlaylist">Delete playlist</Label>
+                    <Label MouseDown="NewPlaylist">Create playlist</Label>
+                    <Label MouseDown="DeleteSelectedPlaylist">Delete playlist</Label>
                 </StackPanel>
             </Button>
             <Separator />
@@ -87,11 +87,13 @@
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition MinWidth="350"/>
             </Grid.ColumnDefinitions>
-            <ListBox Grid.Column="0" Name="List" MouseDoubleClick="OpenAllSongsFromPlaylist"/>
-            <ListBox Grid.Column="1" Name="DetailListing" MouseDoubleClick="ShowSongDetails" >
+            <ListBox Grid.Column="0" Name="List" MouseDown="OpenAllSongsFromPlaylist"/>
+            <ListBox Grid.Column="1" Name="DetailListing" MouseDown="ShowSongDetails" >
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add to playlist" Click="AddSongToPlaylist"></MenuItem>
+                        <MenuItem Header="Play" Click="ButtonPlay_OnClick" />
+                        <Separator />
+                        <MenuItem Header="Add to playlist" Click="AddSongToPlaylist" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
@@ -107,6 +109,12 @@
             <Button Name="ButtonPrev" Click="ButtonPrev_OnClick">Prev</Button>
             <Button Name="ButtonShuffle" Click="ButtonShuffle_OnClick">Shuffle</Button>
             <Button Name="ButtonRepeat" Click="ButtonRepeat_OnClick">Repeat</Button>
+            <Separator />
+            <TextBlock VerticalAlignment="Center" Margin="5"  >Volume</TextBlock>
+            <Slider Name="ButtonVolumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" Minimum="0" Maximum="1" Value="0.5" Width="70"/>
+            <Separator />
+            <TextBlock Margin="5" VerticalAlignment="Center">Seek To</TextBlock>
+            <Slider Name="ButtonTimelineSlider" VerticalAlignment="Center" Margin="5" ValueChanged="SeekToMediaPosition" Width="70"/>
         </ToolBar>
         <MediaElement Grid.Row="3" Width="0" Height="0" LoadedBehavior="Manual" Name="MyPlayer" />
     </Grid>

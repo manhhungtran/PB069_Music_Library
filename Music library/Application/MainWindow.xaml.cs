@@ -27,7 +27,10 @@ namespace Application
 
             _libraryManager = new LibraryManager();
             _playlistManager = new PlaylistManager();
+
             _libraryManager.InitializeLibrary();
+
+            MyPlayer.Volume = ButtonVolumeSlider.Value;
         }
 
         #region PlayerStuff
@@ -40,12 +43,10 @@ namespace Application
         private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
         {
             string pathOfSelectedSong = _libraryManager.GetSongManager()
-                .GetAllSongs()
-                .First(songName => songName.Name == DetailListing.SelectedItem.ToString())
+                .GetSongByName(DetailListing.SelectedItem.ToString())
                 .Path;
 
             MyPlayer.Source = new Uri(pathOfSelectedSong);
-
             MyPlayer.Play();
         }
 
@@ -93,6 +94,18 @@ namespace Application
             MenuRepeat.IsChecked = !MenuRepeat.IsChecked;
             ButtonRepeat.Background = _repeat ? Brushes.White : Brushes.DarkGray;
             _repeat = !_repeat;
+        }
+
+        private void ChangeMediaVolume(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            MyPlayer.Volume = ButtonVolumeSlider.Value;
+        }
+
+        private void SeekToMediaPosition(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            int sliderValue = (int)ButtonTimelineSlider.Value;
+            TimeSpan ts = new TimeSpan(0, 0, 0, 0, sliderValue);
+            MyPlayer.Position = ts;
         }
 
         #endregion
@@ -197,8 +210,7 @@ namespace Application
                     _playlistManager.AddSongToPlaylist(
                         dialog.ListBox.SelectedItem.ToString(),
                         _libraryManager.GetSongManager()
-                            .GetAllSongs().First(x => x.Name == DetailListing.SelectedItem.ToString())
-                            //.GetSongByName(DetailListing.SelectedItem.ToString())
+                            .GetSongByName(DetailListing.SelectedItem.ToString())
                             .Path);
                 }
                 catch (Exception ex)

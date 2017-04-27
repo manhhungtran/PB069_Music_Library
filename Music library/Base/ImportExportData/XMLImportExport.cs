@@ -24,11 +24,6 @@ namespace Base
 
         public string Export(HashSet<T> data, string destinationPath)
         {
-            if (!File.Exists(destinationPath))
-            {
-                File.Create(destinationPath);
-            }
-
             using (var reader = File.OpenWrite(destinationPath))
             {
                 var xmlSerializer = new XmlSerializer(typeof(HashSet<T>));

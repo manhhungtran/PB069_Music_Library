@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Base;
@@ -37,6 +38,11 @@ namespace ApiLogic
         public void ClearSongs()
         {
             _songs.Clear();
+        }
+
+        public Song GetSongByName(string name)
+        {
+            return _songs.First(x => x.Name == name);
         }
     }
 }

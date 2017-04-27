@@ -22,6 +22,11 @@ namespace ApiLogic
         Song GetSong(string path);
 
         /// <summary>
+        /// Returns first song match by <paramref name="name"/>.
+        /// </summary>
+        Song GetSongByName(string name);
+
+        /// <summary>
         /// Returns all songs from library
         /// </summary>
         ReadOnlyCollection<Song> GetAllSongs();

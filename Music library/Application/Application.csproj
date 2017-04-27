@@ -59,12 +59,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddSongToPlaylist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AlertMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="AddPlaylist.xaml.cs">
       <DependentUpon>AddPlaylist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddSongToPlaylist.xaml.cs">
+      <DependentUpon>AddSongToPlaylist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AlertMessage.xaml.cs">
+      <DependentUpon>AlertMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

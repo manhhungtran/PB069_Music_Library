@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
 using ApiLogic;
 using Base;
@@ -17,8 +18,8 @@ namespace Application
     {
         private readonly ILibraryManager _libraryManager;
         private readonly IPlaylistManager _playlistManager;
-        private bool _shuffle = false;
-        private bool _repeat = false;
+        private bool _shuffle;
+        private bool _repeat;
 
         public MainWindow()
         {
@@ -26,55 +27,25 @@ namespace Application
 
             _libraryManager = new LibraryManager();
             _playlistManager = new PlaylistManager();
-           _libraryManager.InitializeLibrary();
+            _libraryManager.InitializeLibrary();
         }
 
-        private void NewPlaylist(object sender, RoutedEventArgs e)
-        {
-            var dialog = new AddPlaylist();
-            dialog.ShowDialog();
+        #region PlayerStuff
 
-            if (dialog.DialogResult == true)
-            {
-                var playlist = new Playlist
-                {
-                    Name = dialog.TextBox.Text
-                };
-                _playlistManager.CreatePlaylist(playlist);
-            }
-        }
-
-        private void ShowPlaylists(object sender, RoutedEventArgs e)
+        private void ButtonStop_OnClick(object sender, RoutedEventArgs e)
         {
-            List.DataContext = _playlistManager.GetAllPlaylists();
-        }
-
-        private void ImportPlaylist(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog {DefaultExt = "xml"};
-            if (dialog.ShowDialog() == true)
-            {
-                _playlistManager.ImportPlaylist(dialog.FileName);
-            }
-        }
-
-        private void ExportPlaylist(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            if (dialog.ShowDialog() == true)
-            {
-                _playlistManager.SavePlaylist(dialog.FileName);
-            }
+            MyPlayer.Stop();
         }
 
         private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
         {
-            MyPlayer.Source = new Uri(
-                _libraryManager.GetSongManager()
-                    .GetAllSongs()
-                    .First(songName => songName.Name == DetailListing.SelectedItem.ToString())
-                    .Path
-                );
+            string pathOfSelectedSong = _libraryManager.GetSongManager()
+                .GetAllSongs()
+                .First(songName => songName.Name == DetailListing.SelectedItem.ToString())
+                .Path;
+
+            MyPlayer.Source = new Uri(pathOfSelectedSong);
+
             MyPlayer.Play();
         }
 
@@ -124,10 +95,143 @@ namespace Application
             _repeat = !_repeat;
         }
 
-        private void LibraryList(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region PlaylistStuff
+
+        private void NewPlaylist(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddPlaylist();
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult == true)
+            {
+                var playlist = new Playlist
+                {
+                    Name = dialog.TextBox.Text
+                };
+                _playlistManager.CreatePlaylist(playlist);
+            }
+            ShowPlaylists(sender, e);
+        }
+
+        private void ShowPlaylists(object sender, RoutedEventArgs e)
         {
             List.Items.Clear();
             DetailListing.Items.Clear();
+
+            MenuShowPlaylists.IsChecked = true;
+            MenuShowLibraryList.IsChecked = false;
+
+            foreach (Playlist playlist in _playlistManager.GetAllPlaylists())
+            {
+                List.Items.Add(playlist);
+            }
+        }
+
+        private void ImportPlaylist(object sender, RoutedEventArgs e)
+        {
+            if (!MenuShowPlaylists.IsChecked) return;
+
+            try
+            {
+                OpenFileDialog dialog = new OpenFileDialog {DefaultExt = "xml"};
+                if (dialog.ShowDialog() == true)
+                {
+                    _playlistManager.ImportPlaylist(dialog.FileName);
+                }
+
+                ShowPlaylists(sender, e);
+            }
+            catch (Exception ex)
+            {
+                new AlertMessage(ex.Message, ex.StackTrace).ShowDialog();
+            }
+        }
+
+        private void ExportPlaylist(object sender, RoutedEventArgs e)
+        {
+            if (!MenuShowPlaylists.IsChecked) return;
+
+            try
+            {
+                SaveFileDialog dialog = new SaveFileDialog {DefaultExt = "xml"};
+                if (dialog.ShowDialog() == true)
+                {
+                    _playlistManager.ExportPlaylist(
+                        _playlistManager.GetPlaylistByName(List.SelectedItem.ToString()),
+                        dialog.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                new AlertMessage(ex.Message, ex.StackTrace).ShowDialog();
+            }
+        }
+
+
+        private void OpenAllSongsFromPlaylist(object sender, MouseButtonEventArgs e)
+        {
+            if (MenuShowPlaylists.IsChecked)
+            {
+                Playlist selectedPlaylist = _playlistManager.GetPlaylistByName(List.SelectedItem.ToString());
+
+                DetailListing.Items.Clear();
+
+                foreach (string song in selectedPlaylist.Songs)
+                {
+                    DetailListing.Items.Add(_libraryManager.GetSongManager().GetSong(song).Name);
+                }
+            }
+        }
+
+        private void AddSongToPlaylist(object sender, RoutedEventArgs e)
+        {
+            AddSongToPlaylist dialog = new AddSongToPlaylist(_playlistManager);
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult == true)
+            {
+                try
+                {
+                    _playlistManager.AddSongToPlaylist(
+                        dialog.ListBox.SelectedItem.ToString(),
+                        _libraryManager.GetSongManager()
+                            .GetAllSongs().First(x => x.Name == DetailListing.SelectedItem.ToString())
+                            //.GetSongByName(DetailListing.SelectedItem.ToString())
+                            .Path);
+                }
+                catch (Exception ex)
+                {
+                    new AlertMessage(ex.Message, ex.StackTrace).ShowDialog();
+                }
+            }
+        }
+
+        private void DeleteSelectedPlaylist(object sender, RoutedEventArgs e)
+        {
+            if (MenuShowPlaylists.IsChecked && List.SelectedItem != null)
+            {
+                _playlistManager.DeletePlaylist(List.SelectedItem.ToString());
+                ShowPlaylists(sender, e);
+            }
+            else
+            {
+                new AlertMessage("You must select playlist first.", "").ShowDialog();
+            }
+        }
+
+        #endregion
+
+        #region LibraryStuff
+
+        private void ShowLibraryList(object sender, RoutedEventArgs e)
+        {
+            List.Items.Clear();
+            DetailListing.Items.Clear();
+
+            MenuShowLibraryList.IsChecked = true;
+            MenuShowPlaylists.IsChecked = false;
 
             foreach (string root in _libraryManager.GetAllRoots())
             {
@@ -144,31 +248,42 @@ namespace Application
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
 
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                try
-                {
-                    _libraryManager.AddRootPath(dialog.SelectedPath);
-                    LibraryList(sender, e);
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
+            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
+            try
+            {
+                _libraryManager.AddRootPath(dialog.SelectedPath);
+                ShowLibraryList(sender, e);
+            }
+            catch (Exception ex)
+            {
+                new AlertMessage(ex.Message, ex.StackTrace).ShowDialog();
+            }
         }
 
         private void RemoveRootFolder(object sender, RoutedEventArgs e)
         {
             _libraryManager.RemoveRootPath(List.SelectedItem.ToString());
-            LibraryList(sender, e);
+            ShowLibraryList(sender, e);
         }
+
+        #endregion
 
         private void Window_Closed(object sender, EventArgs e)
         {
             _libraryManager.Save();
+            _playlistManager.Save();
             System.Windows.Application.Current.Shutdown(0);
+        }
+
+        private void ShowSongDetails(object sender, MouseButtonEventArgs e)
+        {
+            Song selectedSong = _libraryManager
+                .GetSongManager()
+                .GetAllSongs()
+                .First(song => song.Name == DetailListing.SelectedItem.ToString());
+
+            new AlertMessage(selectedSong.ToStringAll(), String.Empty).ShowDialog();
         }
     }
 }

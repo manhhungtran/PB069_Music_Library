@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="500" Width="600" Background="White" Closed="Window_Closed">
+        Height="500" Width="600"
+        Background="White"
+        Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Name="Menu" Height="20" />
@@ -14,29 +16,30 @@
             <RowDefinition Name="Player" Height="60" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="File">
+            <MenuItem Header="Application">
                 <MenuItem Header="Exit" Click="Window_Closed" />
             </MenuItem>
             <MenuItem Header="Playlist">
                 <MenuItem Header="New Playlist" Click="NewPlaylist" />
-                <MenuItem Header="Show Playlists" Click="ShowPlaylists" />
+                <MenuItem Header="Delete Playlist" Click="DeleteSelectedPlaylist" />
                 <Separator />
                 <MenuItem Header="Import Playlist" Click="ImportPlaylist" />
                 <MenuItem Header="Export Playlist" Click="ExportPlaylist" />
                 <Separator />
-                <MenuItem Header="Show playlists" />
+                <MenuItem Header="Show playlists" Name="MenuShowPlaylists" Click="ShowPlaylists"/>
             </MenuItem>
             <MenuItem Header="Library">
-                <MenuItem Header="Show library" Click="LibraryList"/>
-                <Separator />
                 <MenuItem Header="Add root folder" Click="AddRootFolder"/>
                 <MenuItem Header="Delete root folder" Click="RemoveRootFolder" />
                 <Separator />
-                <MenuItem Header="Reset" />
+                <MenuItem Header="Reset" ToolTip="Deletes all root files"/>
+                <Separator />
+                <MenuItem Header="Show library" Click="ShowLibraryList" Name="MenuShowLibraryList"/>
             </MenuItem>
             <MenuItem Header="Player">
                 <MenuItem Header="Play" Click="ButtonPlay_OnClick" />
                 <MenuItem Header="Pause" Click="ButtonPause_OnClick"/>
+                <MenuItem Header="Stop" Click="ButtonStop_OnClick"/>
                 <Separator />
                 <MenuItem Header="Next" Click="ButtonNext_OnClick"/>
                 <MenuItem Header="Previous" Click="ButtonPrev_OnClick"/>
@@ -46,7 +49,7 @@
             </MenuItem>
         </Menu>
         <ToolBar Grid.Row="1"  Background="White">
-            <Button Click="LibraryList">
+            <Button Click="ShowLibraryList">
                 <StackPanel>
                     <Image Height="30" Source="https://d30y9cdsu7xlg0.cloudfront.net/png/79163-200.png"></Image>
                     <Label>Library</Label>
@@ -54,7 +57,7 @@
             </Button>
             <Button>
                 <StackPanel>
-                    <Label MouseDoubleClick="AddRootFolder">Add root path</Label>
+                    <Label MouseDoubleClick="AddRootFolder">Addroot path</Label>
                     <Label MouseDoubleClick="RemoveRootFolder">Delete root path</Label>
                 </StackPanel>
             </Button>
@@ -63,6 +66,12 @@
                 <StackPanel>
                     <Image Height="30" Source="https://d30y9cdsu7xlg0.cloudfront.net/png/18062-200.png" />
                     <Label>Playlists</Label>
+                </StackPanel>
+            </Button>
+            <Button>
+                <StackPanel>
+                    <Label MouseDoubleClick="NewPlaylist">Create playlist</Label>
+                    <Label MouseDoubleClick="DeleteSelectedPlaylist">Delete playlist</Label>
                 </StackPanel>
             </Button>
             <Separator />
@@ -78,8 +87,14 @@
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition MinWidth="350"/>
             </Grid.ColumnDefinitions>
-            <ListBox Grid.Column="0" Name="List" />
-            <ListBox Grid.Column="1" Name="DetailListing" />
+            <ListBox Grid.Column="0" Name="List" MouseDoubleClick="OpenAllSongsFromPlaylist"/>
+            <ListBox Grid.Column="1" Name="DetailListing" MouseDoubleClick="ShowSongDetails" >
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add to playlist" Click="AddSongToPlaylist"></MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
         </Grid>
         <ToolBar Background="White" Grid.Row="3">
             <Button Name="ButtonPlay" Click="ButtonPlay_OnClick">
@@ -87,6 +102,7 @@
             </Button>
             <Separator />
             <Button Name="ButtonPause" Click="ButtonPause_OnClick">Pause</Button>
+            <Button Name="ButtonStop" Click="ButtonStop_OnClick">Stop</Button>
             <Button Name="ButtonNext" Click="ButtonNext_OnClick">Next</Button>
             <Button Name="ButtonPrev" Click="ButtonPrev_OnClick">Prev</Button>
             <Button Name="ButtonShuffle" Click="ButtonShuffle_OnClick">Shuffle</Button>
@@ -96,130 +112,3 @@
     </Grid>
 
 </Window>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

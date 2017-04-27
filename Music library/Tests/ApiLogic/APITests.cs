@@ -121,26 +121,24 @@ namespace MusicLibrary.Tests
             private Playlist playlist2;
 
             [SetUp]
-            public void SetUp()
+            public new void SetUp()
             {
                 _playlistManager = new PlaylistManager();
                 playlist1 = new Playlist
                 {
-                    Id = 1,
                     Name = "somePlaylist",
                     Songs = new List<string>()
                 };
 
                 playlist2 = new Playlist
                 {
-                    Id = 2,
                     Name = "anotherSomePlaylist",
                     Songs = new List<string>()
                 };
             }
 
             [TearDown]
-            public void TearDown()
+            public new void TearDown()
             {
                 _playlistManager = null;
                 playlist1 = null;
@@ -172,8 +170,8 @@ namespace MusicLibrary.Tests
                 _playlistManager.CreatePlaylist(playlist1);
                 _playlistManager.CreatePlaylist(playlist2);
 
-                Assert.IsEmpty(_playlistManager.GetAllSongsInPlaylist(playlist1.Id));
-                Assert.IsEmpty(_playlistManager.GetAllSongsInPlaylist(playlist2.Id));
+                Assert.IsEmpty(_playlistManager.GetAllSongsInPlaylist(playlist1.Name));
+                Assert.IsEmpty(_playlistManager.GetAllSongsInPlaylist(playlist2.Name));
                 Assert.AreEqual(2, _playlistManager.GetAllPlaylists().Count);
             }
 
@@ -181,7 +179,7 @@ namespace MusicLibrary.Tests
             {
                 _playlistManager.CreatePlaylist(playlist1);
                 _playlistManager.CreatePlaylist(playlist2);
-                _playlistManager.DeletePlaylist(playlist2.Id);
+                _playlistManager.DeletePlaylist(playlist2.Name);
 
                 Assert.AreEqual(1, _playlistManager.GetAllPlaylists().Count);
             }

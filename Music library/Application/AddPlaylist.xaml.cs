@@ -6,7 +6,7 @@ namespace Application
     /// <summary>
     /// Interaction logic for AddPlaylist.xaml
     /// </summary>
-    public partial class AddPlaylist : Window
+    public partial class AddPlaylist
     {
         public AddPlaylist()
         {

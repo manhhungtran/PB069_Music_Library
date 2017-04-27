@@ -18,17 +18,12 @@ namespace ApiLogic
         /// <summary>
         /// Removes playlist from library
         /// </summary>
-        void DeletePlaylist(int id);
+        void DeletePlaylist(string name);
 
         /// <summary>
         /// Returns playlist according to <paramref name="name"/>
         /// </summary>
         Playlist GetPlaylistByName(string name);
-
-        /// <summary>
-        /// Returns playlist according to <paramref name="id"/>
-        /// </summary>
-        Playlist GetPlaylistById(int id);
 
         /// <summary>
         /// Returns all playlists from library;
@@ -38,17 +33,12 @@ namespace ApiLogic
         /// <summary>
         /// Adds song to playlist
         /// </summary>
-        void AddSongToPlaylist(int idPlaylist, string song);
+        void AddSongToPlaylist(string namePlaylist, string song);
 
         /// <summary>
         /// Removes song from playlist
         /// </summary>
-        void RemoveSongFromPlaylist(int idPlaylist, string song);
-
-        /// <summary>
-        ///Returns all songs from playlist given by <paramref name="id"/>
-        /// </summary>
-        HashSet<Song> GetAllSongsInPlaylist(int id);
+        void RemoveSongFromPlaylist(string namePlaylist, string song);
 
         /// <summary>
         ///Returns all songs from playlist given by <paramref name="name"/>
@@ -62,8 +52,22 @@ namespace ApiLogic
         void ImportPlaylist(string path);
 
         /// <summary>
-        /// Exports playlist to xml file.
+        /// Exports one playlist to the xml file.
+        /// </summary>
+        /// <param name="playlist"></param>
+        /// <param name="path"></param>
+        void ExportPlaylist(Playlist playlist, string path = null);
+
+        /// <summary>
+        /// Exports all playlists to given xml file.
         /// </summary>
         void SavePlaylist(string path);
+
+        /// <summary>
+        /// Exports all playlists to the default file.
+        /// </summary>
+        void Save();
+
+
     }
 }

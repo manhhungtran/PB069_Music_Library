@@ -1,0 +1,16 @@
+﻿<Window x:Class="Application.AddSongToPlaylist"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="AddSongToPlaylist" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListBox Grid.Row="0"  Name="ListBox"></ListBox>
+        <Button Grid.Row="1" Click="SelectThisPlaylist" Content="Confirm"/>
+    </Grid>
+</Window>

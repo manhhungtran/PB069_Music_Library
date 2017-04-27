@@ -75,12 +75,20 @@ namespace Base
             return Path?.GetHashCode() ?? 0;
         }
 
-        /// <summary>
-        /// Mainly just for testing purpose.
-        /// </summary>
         public override string ToString()
         {
             return $"{Name}";
+        }
+
+        public string ToStringAll()
+        {
+            return $"{nameof(Name)}: {Name}, " +
+                   $"\n{nameof(Path)}: {Path}, " +
+                   $"\n{nameof(Title)}: {Title}, " +
+                   $"\n{nameof(Lenght)}: {Lenght}, " +
+                   $"\n{nameof(Album)}: {Album}, " +
+                   $"\n{nameof(Year)}: {Year}, " +
+                   $"\n{nameof(Artist)}: {Artist}";
         }
     }
 }

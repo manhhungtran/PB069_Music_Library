@@ -24,10 +24,15 @@ namespace Base
 
         public string Export(HashSet<T> data, string destinationPath)
         {
-            using (var reader = File.OpenWrite(destinationPath))
+            if (File.Exists(destinationPath))
+            {
+                File.Delete(destinationPath);
+            }
+
+            using (FileStream writer = File.OpenWrite(destinationPath))
             {
                 var xmlSerializer = new XmlSerializer(typeof(HashSet<T>));
-                xmlSerializer.Serialize(reader, data);
+                xmlSerializer.Serialize(writer, data);
             }
 
             return destinationPath;

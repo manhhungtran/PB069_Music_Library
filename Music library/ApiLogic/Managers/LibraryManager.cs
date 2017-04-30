@@ -67,14 +67,7 @@ namespace ApiLogic
 
             foreach (string potentialSong in Library.Songs)
             {
-                try
-                {
-                    SongManager.CreateSong(Song.New(potentialSong));
-                }
-                catch
-                {
-                    // ignored
-                }
+                SongManager.CreateSong(Song.New(potentialSong));
             }
         }
 

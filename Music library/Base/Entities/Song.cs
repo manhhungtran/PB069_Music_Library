@@ -46,6 +46,8 @@ namespace Base
 
             var tagFile = TagLib.File.Create(streamFileAbstraction);
 
+            reader.Close();
+
             return new Song
             {
                 Name = System.IO.Path.GetFileNameWithoutExtension(filePath),

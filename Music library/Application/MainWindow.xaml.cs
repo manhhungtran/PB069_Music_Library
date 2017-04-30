@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
@@ -23,14 +24,19 @@ namespace Application
 
         public MainWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            _libraryManager = new LibraryManager();
-            _playlistManager = new PlaylistManager();
+                _libraryManager = new LibraryManager();
+                _playlistManager = new PlaylistManager();
 
-            _libraryManager.InitializeLibrary();
-
-            MyPlayer.Volume = ButtonVolumeSlider.Value;
+                _libraryManager.InitializeLibrary();
+            }
+            catch (Exception ex)
+            {
+                new AlertMessage(ex.Message, ex.StackTrace).ShowDialog();
+            }
         }
 
         #region PlayerStuff
@@ -42,12 +48,20 @@ namespace Application
 
         private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
         {
-            string pathOfSelectedSong = _libraryManager.GetSongManager()
-                .GetSongByName(DetailListing.SelectedItem.ToString())
-                .Path;
+            try
+            {
+                if (DetailListing.SelectedItem == null || MyPlayer == null) return;
 
-            MyPlayer.Source = new Uri(pathOfSelectedSong);
-            MyPlayer.Play();
+                Song selectedSong =
+                    _libraryManager.GetSongManager().GetSongByName(DetailListing.SelectedItem.ToString());
+
+                MyPlayer.Source = new Uri(selectedSong.Path);
+                MyPlayer.Play();
+            }
+            catch (Exception ex)
+            {
+                new AlertMessage(ex.Message, ex.StackTrace).ShowDialog();
+            }
         }
 
         private void ButtonPause_OnClick(object sender, RoutedEventArgs e)
@@ -98,7 +112,10 @@ namespace Application
 
         private void ChangeMediaVolume(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyPlayer.Volume = ButtonVolumeSlider.Value;
+            if (MyPlayer != null)
+            {
+                MyPlayer.Volume = ButtonVolumeSlider?.Value ?? 0;
+            }
         }
 
         private void SeekToMediaPosition(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -106,6 +123,15 @@ namespace Application
             int sliderValue = (int)ButtonTimelineSlider.Value;
             TimeSpan ts = new TimeSpan(0, 0, 0, 0, sliderValue);
             MyPlayer.Position = ts;
+        }
+
+        private void ReInitPlayerForSong(object sender, EventArgs e)
+        {
+            if (MyPlayer.NaturalDuration.HasTimeSpan)
+            {
+                ButtonTimelineSlider.Maximum = MyPlayer.NaturalDuration.TimeSpan.TotalMilliseconds;
+                ButtonTimelineSlider.Value = 0;
+            }
         }
 
         #endregion
@@ -121,7 +147,8 @@ namespace Application
             {
                 var playlist = new Playlist
                 {
-                    Name = dialog.TextBox.Text
+                    Name = dialog.TextBox.Text,
+                    Songs = new List<string>()
                 };
                 _playlistManager.CreatePlaylist(playlist);
             }
@@ -207,11 +234,10 @@ namespace Application
             {
                 try
                 {
-                    _playlistManager.AddSongToPlaylist(
-                        dialog.ListBox.SelectedItem.ToString(),
-                        _libraryManager.GetSongManager()
-                            .GetSongByName(DetailListing.SelectedItem.ToString())
-                            .Path);
+                    string namePlaylist = dialog.ListBox.SelectedItem.ToString();
+                    string pathToSong = _libraryManager.GetSongManager().GetSongByName(DetailListing.SelectedItem.ToString()).Path;
+
+                    _playlistManager.AddSongToPlaylist(namePlaylist, pathToSong);
                 }
                 catch (Exception ex)
                 {
@@ -275,11 +301,32 @@ namespace Application
 
         private void RemoveRootFolder(object sender, RoutedEventArgs e)
         {
+            if (List.SelectedItem == null || !MenuShowLibraryList.IsChecked)
+            {
+                new AlertMessage("You must pick some folder first.", "").ShowDialog();
+                return;
+            }
+
             _libraryManager.RemoveRootPath(List.SelectedItem.ToString());
             ShowLibraryList(sender, e);
         }
 
         #endregion
+
+        #region General events
+
+        private void ListDelete(object sender, RoutedEventArgs e)
+        {
+            if (MenuShowLibraryList.IsChecked)
+            {
+                RemoveRootFolder(sender, e);
+            }
+
+            if (MenuShowPlaylists.IsChecked)
+            {
+                DeleteSelectedPlaylist(sender, e);
+            }
+        }
 
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -288,7 +335,7 @@ namespace Application
             System.Windows.Application.Current.Shutdown(0);
         }
 
-        private void ShowSongDetails(object sender, MouseButtonEventArgs e)
+        private void ShowSongDetails(object sender, EventArgs e)
         {
             Song selectedSong = _libraryManager
                 .GetSongManager()
@@ -297,5 +344,7 @@ namespace Application
 
             new AlertMessage(selectedSong.ToStringAll(), String.Empty).ShowDialog();
         }
+
+        #endregion
     }
 }

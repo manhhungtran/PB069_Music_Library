@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="500" Width="700"
+        MinHeight="500" MinWidth="900"
+        Width="900" Height="500"
         Background="White"
         Closed="Window_Closed">
     <Grid>
@@ -13,7 +14,7 @@
             <RowDefinition Name="Menu" Height="20" />
             <RowDefinition Name="MenuToolbar" Height="65" />
             <RowDefinition Name="Board" Height="*" />
-            <RowDefinition Name="Player" Height="60" />
+            <RowDefinition Name="Player" Height="70" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="Application">
@@ -84,7 +85,7 @@
         </ToolBar>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="300"/>
                 <ColumnDefinition MinWidth="350"/>
             </Grid.ColumnDefinitions>
             <ListBox Grid.Column="0" Name="List" MouseDoubleClick="OpenAllSongsFromPlaylist">
@@ -117,12 +118,17 @@
             <Button Name="ButtonShuffle" Click="ButtonShuffle_OnClick">Shuffle</Button>
             <Button Name="ButtonRepeat" Click="ButtonRepeat_OnClick">Repeat</Button>
             <Separator />
-            <TextBlock VerticalAlignment="Center" Margin="5"  >Volume</TextBlock>
-            <Slider Name="ButtonVolumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" Minimum="0" Maximum="1" Value="0.5" Width="70"/>
+            <StackPanel>
+                <Label>Volume</Label>
+                <Slider Name="ButtonVolumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" Minimum="0" Maximum="1" Value="0.5" Width="70"/>
+            </StackPanel>
             <Separator />
-            <Slider Name="ButtonTimelineSlider" VerticalAlignment="Center" Margin="5" ValueChanged="SeekToMediaPosition" Width="200" />
+            <StackPanel>
+                <TextBox Height="25" Text="{Binding ElementName=MyPlayer, Path=Source}" Width="500" IsReadOnly="True" TextWrapping="WrapWithOverflow"/>
+                <Slider Name="ButtonTimelineSlider" ValueChanged="SeekToMediaPosition" Width="500"/>
+            </StackPanel>
         </ToolBar>
-        <MediaElement Grid.Row="3" Width="0" Height="0" LoadedBehavior="Manual" Name="MyPlayer" SourceUpdated="ReInitPlayerForSong" MediaEnded="ButtonNext_OnClick" MediaOpened="ReInitPlayerForSong"/>
+        <MediaElement Grid.Row="3" Width="0" Height="0" LoadedBehavior="Manual" Name="MyPlayer" MediaEnded="ButtonNext_OnClick" MediaOpened="UpdateLabel"/>
     </Grid>
 
 </Window>

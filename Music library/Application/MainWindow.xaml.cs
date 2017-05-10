@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -44,6 +45,7 @@ namespace Application
         private void ButtonStop_OnClick(object sender, RoutedEventArgs e)
         {
             MyPlayer.Stop();
+            MyPlayer.Source = null;
         }
 
         private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
@@ -53,7 +55,9 @@ namespace Application
                 if (DetailListing.SelectedItem == null || MyPlayer == null) return;
 
                 Song selectedSong =
-                    _libraryManager.GetSongManager().GetSongByName(DetailListing.SelectedItem.ToString());
+                    _libraryManager
+                    .GetSongManager()
+                    .GetSongByName(DetailListing.SelectedItem.ToString());
 
                 MyPlayer.Source = new Uri(selectedSong.Path);
                 MyPlayer.Play();
@@ -125,7 +129,7 @@ namespace Application
             MyPlayer.Position = ts;
         }
 
-        private void ReInitPlayerForSong(object sender, EventArgs e)
+        private void UpdateLabel(object sender, EventArgs e)
         {
             if (MyPlayer.NaturalDuration.HasTimeSpan)
             {
@@ -290,6 +294,11 @@ namespace Application
 
             try
             {
+                if (MyPlayer.Source != null)
+                {
+                    new AlertMessage("You should stop media player first.", String.Empty).ShowDialog();
+                    return;
+                }
                 _libraryManager.AddRootPath(dialog.SelectedPath);
                 ShowLibraryList(sender, e);
             }
@@ -303,7 +312,13 @@ namespace Application
         {
             if (List.SelectedItem == null || !MenuShowLibraryList.IsChecked)
             {
-                new AlertMessage("You must pick some folder first.", "").ShowDialog();
+                new AlertMessage("You must pick some folder first.", String.Empty).ShowDialog();
+                return;
+            }
+
+            if (MyPlayer.Source != null)
+            {
+                new AlertMessage("You should stop media player first.", String.Empty).ShowDialog();
                 return;
             }
 
@@ -346,5 +361,6 @@ namespace Application
         }
 
         #endregion
+
     }
 }
